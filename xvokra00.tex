@@ -1,0 +1,363 @@
+\documentclass[12pt,a4paper,titlepage,final]{article}
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[bookmarksopen,colorlinks,plainpages=false,urlcolor=blue,unicode]{hyperref}
+\usepackage{url}
+\usepackage{float}
+\usepackage[dvipdf]{graphicx}
+\usepackage[top=3.5cm, left=2.5cm, text={17cm, 24cm}, ignorefoot]{geometry}
+
+\begin{document}
+\newpage
+\pagestyle{empty}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% titulní strana
+\def\author{Lukáš Vokráčko}
+\def\email{xvokra00@stud.fit.vutbr.cz}
+\def\projname{Semestrální projekt - řešení obvodů}
+\input{title.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% obsah
+
+\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% textova zprava
+\newpage
+\pagestyle{plain}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Příklad 1}
+\subsection{Zadání}
+Stanovte napětí na $U_{R7}$ a proud $I_{R7}$. Použijte metodu postupného zjednodušování obvodu.
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U [V]$ & $R_1 [\Omega]$ & $R_2 [\Omega]$ & $R_3 [\Omega]$ & $R_4 [\Omega]$ & $R_5 [\Omega]$  & $R_6 [\Omega]$ & $R_7 [\Omega]$ & $R_8 [\Omega]$\\
+\hline
+B & 95 & 650 & 730 & 340 & 330 & 410 & 830 & 340 & 220\\
+\hline
+\end{tabular}
+
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Vypočítám hodnoty paralelně zapojených rezistorů $R_2, R_3$ a $R_7, R_8$.
+\item Odpory $R_1, R_{23}, R_4$ transformuji na hvězdu a vypočítám hodnoty odporů $R_a, R_b, R_c$
+\item Vypočítám celkový odpor $R_{EKV}$ \ref{eq1:rekv} zjednodušením schématu \ref{fig1}, které vzniklo transfigurací
+\item Vypočítám proud $I$
+\item Vypočítám napětí $U_{R7}$ \ref{eq1:ur7} na rezistoru $R_{78}$ a z něj proud $I_{R7}$ \ref{eq1:ir7} na rezistoru $R_7$
+\end{enumerate}
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{img/fig1.eps}
+  \caption{Schéma obvodu po tranfiguraci}
+  \label{fig1}
+\end{figure}
+
+\newcommand{\prvniRdvatri}{\ensuremath{\frac{R_2*R_3}{R_2+R_3}}}
+\newcommand{\prvniRsedmosm}{\ensuremath{\frac{R_7*R_8}{R_7+R_8}}}
+\newcommand{\prvniRa}{\ensuremath{\frac{R_1*\prvniRdvatri}{R_1+\prvniRdvatri + R_4}}}
+\newcommand{\prvniRb}{\ensuremath{\frac{R_1*R_4}{R_1+\prvniRdvatri + R_4}}}
+\newcommand{\prvniRc}{\ensuremath{\frac{R_4*\prvniRdvatri}{R_1+\prvniRdvatri + R_4}}}
+\begin{equation}\label{eq1:rekv}
+R_{EKV} = \prvniRa + \frac{(\prvniRb + R_5)*(\prvniRc+R_6)}{(\prvniRb+R_5)+(\prvniRc+R_6)} + \prvniRsedmosm
+\end{equation}
+\[R_{EKV} = 612.1807\Omega\]
+\[I = \frac{U}{R_{EKV}}\]
+\subsection{Výsledky}
+\begin{equation}\label{eq1:ur7}
+U_{R7} = I * \prvniRsedmosm = 20.7280V
+\end{equation}
+\begin{equation}\label{eq1:ir7}
+I_{R7} = \frac{U_{R7}}{R_7} = 0.0609A
+\end{equation}
+
+
+\section{Příklad 2}
+\subsection{Zadání}
+Stanovte napětí $U_{R5}$ a proud $I_{R5}$. Použijte metodu Theveninovy věty.\\
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U [V]$ & $R_1 [\Omega]$ & $R_2 [\Omega]$ & $R_3 [\Omega]$ & $R_4 [\Omega]$ & $R_5 [\Omega]$\\
+\hline
+F & 130 & 350 & 600 & 195 & 320 & 280\\
+\hline
+\end{tabular}
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Odpojení odporu $R_5$
+\item Transfigurace rezistorů $R_1, R_2, R_3$ na hvězdu \ref{fig2}
+\item Překreslení obvodu \ref{fig3} pro výpočet celkového odporu $R_i$ \ref{eq2:ri}
+\item Výpočet proudu $I$ \ref{eq2:i} protékajícího celým obvodem
+\item Nakreslení náhradního schématu \ref{fig4}
+\item Výpočet $U_i$\ref{eq2:ui}
+\item Výpočet $I_{R5} \ref{eq2:ir5}, U_{R5} \ref{eq2:ur5}$
+\end{enumerate}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{img/fig2.eps}
+  \caption{Schéma obvodu po tranfiguraci}
+  \label{fig2}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{img/fig3.eps}
+  \caption{Překreslený obvod}
+  \label{fig3}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{img/fig4.eps}
+  \caption{Náhradní obvod}
+  \label{fig4}
+\end{figure}
+
+\newcommand{\druhyRa}{\ensuremath{\frac{R_1*R_2}{R_1+ R_2 + R_3}}}
+\newcommand{\druhyRb}{\ensuremath{\frac{R_2*R_3}{R_1+ R_2 + R_3}}}
+\newcommand{\druhyRc}{\ensuremath{\frac{R_1*R_3}{R_1+ R_2 + R_3}}}
+\begin{equation}\label{eq2:ri}
+R_i = \druhyRb + \frac{(\druhyRc+R_4)*\druhyRa}{\druhyRc+R_4+\druhyRa}
+\end{equation}
+\[R_i = 225.8434\Omega\]
+
+\begin{equation}\label{eq2:i}
+I = \frac{U}{\druhyRa+R_4+\druhyRc}
+\end{equation}
+
+\begin{equation}\label{eq2:ui}
+U_i = I*(\druhyRc+R_4)
+\end{equation}
+\subsection{Výsledky}
+\begin{equation}\label{eq2:ir5}
+I_{R5} = \frac{U_i}{R_i+R_5} = 0.1732A
+\end{equation}
+
+\begin{equation}\label{eq2:ur5}
+U_{R5} = R_5 * I_{R5} = 48.5178V
+\end{equation}
+
+
+\section{Příklad 3}
+\subsection{Zadání}
+Stanovte napětí $U_{R4}$ a proud $I_{R4}$. Použijte metodu uzlových napětí ($U_A, U_B, U_C$).\\
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U_1 [V]$ & $U_2[V]$ & $I[A]$ & $R_1 [\Omega]$ & $R_2 [\Omega]$ & $R_3 [\Omega]$ & $R_4 [\Omega]$ & $R_5 [\Omega]$  & $R_6 [\Omega]$\\
+\hline
+E & 135 & 55 & 0.65 & 520 & 420 & 520 & 420 & 215 & 305\\
+\hline
+\end{tabular}
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Zápis rovnic pro proudy $I_{R1}-I_{R6}$ \ref{eq3:proudy}
+\item Vytvoření rovnic pro uzlová napětí $A - C$ \ref{eq3:napeti}
+\item Řešení soustavy 3 rovnic se 3 neznámými $U_A, U_B, U_C$
+\item Výpočet proudu $I_{R4}$ \ref{eq3:ir4}
+\end{enumerate}
+\begin{equation}\label{eq3:proudy}
+I_{R1} = \frac{U_A}{R_1}
+\end{equation}
+\[I_{R2} = \frac{U_A + U_B + U_1}{R_2}\]
+\[I_{R3} = \frac{U_A-U_B}{R_3}\]
+\[I_{R4} = \frac{U_C}{R_4}\]
+\[I_{R5} = \frac{U_B-U_C}{R_5}\]
+\[I_{R6} = \frac{U_2+U_C-U_B}{R_6}\]
+
+\begin{equation}\label{eq3:napeti}
+A: I+I_{R2}-I_{R3}-I_{R1} = 0
+\end{equation}
+\[B:  I_{R3}-I_{R2}+I_{R6}-I_{R5} = 0\]
+\[C: I_{R5}-I_{R6}-I_{R4} = 0\]
+
+\begin{equation}\label{eq3:ir4}
+U_{R4} = U_C
+I_{R4} = \frac{U_C}{R_4}
+\end{equation}
+
+\subsection{Výsledky}
+\[U_{R4} = U_C = 77.8185V\]
+\[I_{R4} = 0.1852A\]
+
+\section{Příklad 4}
+\subsection{Zadání}
+Pro napájecí napětí platí: $u=U*sin(2\pi f t)$. Ve vztahu pro napětí na cívce: 
+$u_L = U_L*sin(2\pi f t+\varphi_L)$ určete $|U_L|$ a $\varphi_L$. Použijte metodu zjednodušování obvodu.\\
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U [V]$ & $R_1 [\Omega]$ & $R_2 [\Omega]$ & $R_3 [\Omega]$ & $L [mH]$ & $C_1 [\mu F]$  & $C_2 [\mu F]$ & $f[Hz]$\\
+\hline
+B & 35 & 160 & 220 & 270 & 480 & 440 & 170 & 85
+\\
+\hline
+\end{tabular}
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Výpočet celkové impedance obvodu \ref{eq4:impedance}
+\item Výpočet proudu $i_L$ na větvi s cívkou \ref{eq4:proud}
+\item Výpočet napětí $u_L$ na cívce $L$ \ref{eq4:ul}
+\item Výpočet $|u_L|$ \ref{eq4:abs}
+\item Výpočet $\varphi_L$ \ref{eq4:uhel}
+\end{enumerate}
+\newcommand{\ctvrtyImpCjedna}{\ensuremath{\frac{1}{2\pi f C_1 j}}}
+\newcommand{\ctvrtyImpCdva}{\ensuremath{\frac{1}{2\pi f C_2 j}}}
+\newcommand{\ctvrtyImpL}{\ensuremath{2\pi f L j}}
+\newcommand{\ctvrtyParL}{\ensuremath{\frac{(\ctvrtyImpCdva+R_2)*(\ctvrtyImpL+R_1)}{(\ctvrtyImpCdva+R_2)+(\ctvrtyImpL+R_1)}}}
+\begin{equation}\label{eq4:impedance}
+Z = \ctvrtyImpCjedna + \frac{\ctvrtyParL * R_3}{\ctvrtyParL + R_3}\Omega
+\end{equation}
+\begin{equation}\label{eq4:proud}
+i_L = \frac{U - \frac{U}{Z}*\ctvrtyImpCjedna}{\ctvrtyImpL+R_1}A
+\end{equation}
+\begin{equation}\label{eq4:ul}
+u_L = i_L*\ctvrtyImpL V
+\end{equation}
+\begin{equation}\label{eq4:abs}
+|U_L| = \sqrt{Im(u_C)^2+Re(u_C)^2} V
+\end{equation}
+\begin{equation}\label{eq4:uhel}
+\varphi_L = arctan(\frac{Im(u_C)}{Re(u_C)})rad
+\end{equation}
+\subsection{Výsledky}
+\[|u_L| = 29.9934V\]
+\[\varphi_L = 0.6009rad\]
+
+\section{Příklad 5}
+\subsection{Zadání}
+Pro napájecí napětí platí: $u_1=U_1*sin(2\pi f t)$, $u_2=U_2*sin(2\pi f t)$.
+Ve vztahu pro napění na cívce $L_1:u_{L_1}=U_{L_1}*sin(2\pi f t + \varphi L_1)$ 
+určete $|U_{L_1}|$ a $\varphi L_1$. Použijte metodu smyčkových proudů.\\
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U_1 [V]$ & $U_2 [V]$ & $R_1 [\Omega]$ & $R_2 [\Omega]$ & $L_1[mH]$ & $L_2[mH]$ & $C_1 [\mu F]$ & $C_2 [\mu F]$ & $f [Hz]$\\
+\hline
+F & 20 & 35 & 120 & 100 & 170 & 80 & 150 & 90 & 65\\
+\hline
+\end{tabular}
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Vyjádření rovnic pro smyčkové proudy \ref{eq5:proudy} podle obrázku \ref{fig:5}
+\item Výpočet smyčkových proudů ze soustavy rovnic
+\item Výpočet napětí $u_{L1}$ na cívce $L_{1}$ \ref{eq5:ul1}
+\item Výpočet absolutní hodnoty $|U_{L1}|$ \ref{eq5:abs}
+\item Výpočet $\varphi_{L1}$ \ref{eq5:fi}
+\end{enumerate}
+\begin{equation}\label{eq5:proudy}
+I_a: X_{C1}I_a+R_1I_a+X_{L2}(I_a-I_c)+X_{C2}(I_a-I_b) = U_1
+\end{equation}
+\[I_b: X_{L1}(I_b-I_c)+X_{C2}(I_b-I_a)+U_1=0\]
+\[I_c: X_{L2}(I_c-I_a)+X_{L1}(I_c-I_b)+R_2I_c+U_2=0\]
+
+\begin{equation}\label{eq5:ul1}
+U_{L1} = X_{L1}*(I_b-I_c)
+\end{equation}
+
+\begin{equation}\label{eq5:abs}
+|U_{L1}| = \sqrt{Im(U_{L1})^2+Re(U_{L1})^2}
+\end{equation}
+
+\begin{equation}\label{eq5:fi}
+\varphi_{L1} = arctan(\frac{Im(U_{L1})}{Re(U_{L1})})-\pi
+\end{equation}
+\begin{figure}[h]
+  \centering
+  \includegraphics[height=5cm]{img/fig5.eps}
+  \caption{Směry proudů}
+  \label{fig:5}
+\end{figure}
+\subsection{Výsledky}
+\[|U_{L1}| = 45.6745V\]
+\[\varphi_{L1} = -2.0907rad\]
+\section{Příklad 6}
+\subsection{Zadání}
+Sestavte diferenciální rovnici popisující chování obvodu na obrázku, dále ji upravte dosazením hodnot parametrů. Vypočítejte analytické řešení $u_C=f(t)$.
+Proveďte kontrolu výpočtu dosazením do sestavené diferenciální rovnice.\\
+Hodnoty:\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+Sk. & $U [V]$ & $C[F]$ & $R[\Omega]$ & $u_c(0) [V]$\\
+\hline
+E & 12 & 30 & 45 & 6\\
+\hline
+\end{tabular}
+\subsection{Postup řešení}
+\begin{enumerate}
+\item Vytvoření obecné rovnice \ref{eq6:obecna}
+\item Vyjádření $\lambda$ z charakteristické rovnice \ref{eq6:lambda}
+\item Dosazení do očekávaného řešení \ref{eq6:ocekavane}
+\item Vytvoření $u_c'$ \ref{eq6:ucderivace}
+\item Dosazení do obecné rovnice \ref{eq6:obecnadosazeni}
+\item Integrace $K'(t)$ \ref{eq6:integrace}
+\item Výpočet konstanty dosazením podmínky \ref{eq6:konst}
+\item Dosazení do očekávaného řešení \ref{eq6:dosazeni}
+\end{enumerate}
+
+\begin{equation}\label{eq6:obecna}
+u_c'=\frac{1}{C}*\frac{U-u_c}{R}
+\end{equation}
+\[1350u_c'+u_c=12\]
+
+\begin{equation}\label{eq6:lambda}
+1350\lambda+1=0
+\end{equation}
+\[\lambda=-\frac{1}{1350}\]
+
+\begin{equation}\label{eq6:ocekavane}
+u_c(t)=K(t)e^{-\frac{t}{1350}}
+\end{equation}
+
+\begin{equation}\label{eq6:ucderivace}
+u_c'(t)=K'(t)e^{-\frac{t}{1350}}+K(t)(-\frac{1}{1350})e^{-\frac{t}{1350}}
+\end{equation}
+
+\begin{equation}\label{eq6:obecnadosazeni}
+1350K'(t)e^{-\frac{t}{1350}}+1350K(t)(-\frac{1}{1350})e^{-\frac{t}{1350}})+K(t)e^{-\frac{t}{1350}}=12
+\end{equation}
+\[K'(t)=\frac{12e^{\frac{t}{1350}}}{1350}\]
+
+\begin{equation}\label{eq6:integrace}
+K(t) = \frac{1350*12e^{\frac{t}{1350}}}{1350} + c
+\end{equation}
+
+\begin{equation}\label{eq6:konst}
+6=12+ce^{-\frac{0}{1350}}
+\end{equation}
+\[c = -6\]
+
+\begin{equation}\label{eq6:dosazeni}
+u_c(t)= 12-6e^{-\frac{t}{1350}}
+\end{equation}
+\subsection{Výsledky}
+\[1350u_c'+u_c=12\]
+\[u_c(t)= 12-6e^{-\frac{t}{1350}}\]
+
+\section{Přehled výsledků}
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+Př. & Sk. & \multicolumn{2}{|c|}{Výsledky}\\
+\hline
+1 & B & $I_{R7} = 0.0609A$ & $U_{R7} = 20.7280V$\\
+\hline
+2 & F & $I_{R5} = 0.1732A$ & $U_{R5} = 48.5178V$\\
+\hline
+3 & E & $I_{R4} = 0.1852A$ & $U_{R4} = 77.8185V$\\
+\hline
+4 & B & $\varphi_L = 0.6009rad$ & $|u_L| = 29.9934V$\\
+\hline
+5 & F & $\varphi_{L1} = -2.0907rad$ & $|U_{L1}| = 45.6745V$\\
+\hline
+6 & E & $1350u_c'+u_c=12$ & $u_c(t)= 12-6e^{-\frac{t}{1350}}$\\
+\hline
+\end{tabular}
+\end{document}
